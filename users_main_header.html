@@ -1,0 +1,161 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+  <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0" />
+  <meta name="format-detection" content="telephone=no" />
+  <meta name="keywords" content="{$_G.system.con_keywords}" />
+  <meta name="description" content="{$_G.system.con_description}" />
+  <title>{if $_G.site_result.name!=""}{$_G.site_result.name} - {/if}{$_G.system.con_webname} - {$_G.system.con_webtitle}</title>
+
+  <link type="text/css" rel="stylesheet" href="{$tpldir}/css/common.css" />
+  <link type="text/css" rel="stylesheet" href="{$tpldir}/css/zh_style.css" />
+
+  <script type="text/javascript" src="{$tpldir}/js/jquery-1.8.3.min.js"></script>
+  <script type="text/javascript" src="{$tpldir}/js/diyou.js"></script>
+  <script type="text/javascript" src="{$tpldir}/js/base.js"></script>
+  <script>
+    var user_id = '{$_G.user_id}';
+    {if $_G.user_id!=""}
+    var email_status = {$_G.approve_result.email_status};//邮箱是否认证
+    var phone_status = {$_G.approve_result.phone_status};//手机是否认证
+    var realname_status = {$_G.approve_result.realname_status};//是否实名认证
+    var trust_status = '{$_G.approve_result.reg_trust}';//是否开通双钱账号
+    var trust_authize = '{$_G.approve_result.trust}';//是否二次授权
+    {/if}
+    var web_domain = "{$_G.web_domain}";
+  </script>
+</head>
+
+<body>
+  <!-- headTop -->
+  <div class="anbaobg-1 foxfull">
+    <div class="centerIn">
+      <div class="anbaobg-1 anbaotop">
+        <div class="anbaotop-l fl">客服电话：{$_G.system.con_kefu_phone}（工作时间：{$_G.system.con_customer_service_times}）</div>
+        <div class="anbaotop-r fr">
+          <p class="anbaotop-r-1 fl">
+            <a href="/fxts/index.html">风险提示</a>
+            <a href="/zcrz/index.html">帮助中心</a>
+            <a href="javascript:void(0);" id="guideBtn">新手指南</a>
+            {if $_G.user_id == ''}
+            <a href="/?user&q=login">登录</a><a href="/?user&q=reg">注册</a>
+            {else}
+            {if $_G.user_result.apiid!=""}
+            <span>你好，<a href="/?user">{if $_G.api_result.nickname==""}{$_G.api_result.screen_name}{else}{$_G.api_result.nickname}{/if}</a></span>
+            <a href="/?user&m=message/list">站内信(<font style="color:#f00; margin-left:5px;">{$_G.message_result.message_no|default:0}</font> )</a>
+            {else}
+            <span>你好，<a href="/?user">{$_G.user_result.username}</a></span>
+            <a href="/?user&m=message/list">站内信(<font style="color:#f00; margin-left:5px;">{$_G.message_result.message_no|default:0}</font> )</a>
+            {/if}
+            <a href="/?user&q=logout">退出</a>
+            {/if}
+          </p>
+          <!--<p class="anbaotop-r-2 fl"><a href="/app/index.html">移动客户端</a></p>-->
+
+          <ul id="guideLevel2" style="display: none; position: absolute; top: 36px; margin-left: 86px; background: #f2f2f3; padding: 5px 10px;">
+            <li><a href="/xszn/index.html">出借投资</a></li>
+            <li><a href="/jkzn/index.html">借款指南</a></li>
+          </ul>
+
+          <script>
+            $('#guideBtn').hover(function() {
+              $(this).parents().find('#guideLevel2').slideDown();
+            });
+            $('#guideLevel2').hover(function(){
+              $(this).show();
+            },function(){
+              $(this).slideUp();
+            });
+          </script>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- headMain -->
+  <div class="foxfull anbaobg-2">
+    <div class="centerIn">
+      <div class="anbaologo">
+        <p class="anbaologo-h fl">
+          <a href="/">{if $_G.system.con_logo!=""}<img src="{$_G.system.con_logo}" alt="{if $_G.system.con_webname!=""}{$_G.system.con_webname}{/if}" />{/if}</a>
+          <img src="{$tpldir}/images/zzBank.gif" alt="众邦银行即将上线">
+          <img src="{$tpldir}/images/slogen.png" alt="slogen">
+        </p>
+        <p class="anbaologo-r"><a href="/?user">我的账户</a></p>
+      </div>
+    </div>
+  </div>
+
+  <!-- headMenu -->
+  <div class="anbaobg-3 foxfull">
+    <div class="centerIn">
+      <div class="anbaonav">
+        <div class="anbaonav-l">
+          {foreach from=$_G.site_list key=key item=item}
+            <a href="{if $item.nid=='index'}/{else}{$item.url}{/if}" class="{if $_G.site_nid!='borrow' &&$_G.site_nid!='invest' && ($_G.site_presult.id==$item.id || ($_G.site_result.nid==$item.nid && $smarty.request.m!=='borrow/loan/new'&& $smarty.request.m!=='borrow/amount'))  || $item.nid|cat:'/loan/new'==$smarty.request.m || $item.nid|cat:'amount'==$smarty.request.m|| ($_G.site_result.pid==$item.id&&$item.nid!='borrow') || ($item.nid=='index' && $_G.site_result.nid=='' ) || $_U.query_sort == $item.nid } hover {/if}">{$item.name}</a>
+          {/foreach}
+        </div>
+        <div class="anbaonav-r"><a href="/zjanq/index.html" class="hover">安全保障</a></div>
+      </div>
+    </div>
+  </div>
+
+  <!-- 登录后menu -->
+  <div class="wdzh foxfull">
+    <div class="centerIn">
+      <div class="wdzhAll wdzhA">
+        <div class="wdzhA-left">
+          <div class="wdzhA-left-img">
+            <a href="/?user&m=approve/safe"><i class="icon"><img src="{$_G.user_result.avatar_url|avatar}" width="85px" height="85px"/></i></a>
+          </div>
+          <div class="wdzhA-left-top">
+            <span>尊敬的，{$_G.user_result.username}&nbsp;{regard}</span>
+            <!-- <label>L1</label><a href="#">我的成长进度</a><a href="/?user&m=mall/golds/exchange">兑换金币</a> -->
+          </div>
+
+          <div class="wdzhA-left-bottom">
+            <p>
+              {if $_G.approve_result.realname_status==1}
+                <a href="/?user&m=approve/safe" title="实名已认证"><img src="{$tpldir}/images/jbdh_14.png" /></a>
+              {else}
+                <a href="/?user&m=approve/safe" title="实名未认证"><img src="{$tpldir}/images/jbdh_14.png" class="unbound" /></a>
+              {/if}
+
+              {if $_G.approve_result.email_status==1}
+                <a href="/?user&m=approve/safe" title="邮箱已激活"><img src="{$tpldir}/images/jbdh_16.png" /></a>
+              {else}
+                <a href="/?user&m=approve/safe" title="邮箱未激活"><img src="{$tpldir}/images/jbdh_16.png" class="unbound" /></a>
+              {/if}
+
+              {if $_G.approve_result.phone_status==1}
+                <a href="/?user&m=approve/safe" title="手机已绑定"><img src="{$tpldir}/images/jbdh_20.png" /></a>
+              {else}
+                <a href="/?user&m=approve/safe" title="手机未绑定"><img src="{$tpldir}/images/jbdh_20.png" class="unbound" /></a>
+              {/if}
+            </p>
+
+            {articles module="users" function = "get_login_log_one" user_id=$_G.user_id var="login_var"}
+              <span>
+              {if $login_var.addtime!=""}
+              上次登录时间：{$login_var.addtime|date_format}
+              {/if}
+              &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+              {if $login_var.addip!=""}
+              IP:{$login_var.addip}
+              {/if}
+              </span>
+            {/articles}
+          </div>
+        </div>
+
+        <div class="wdzhA-right">
+          {if $smarty.session.user_role==2 || ($smarty.session.user_role==''&&$_G.user_result.user_role==2)}
+            <a href="/?user&user_role=1">投资</a>
+          {else}
+            <a href="/?user&user_role=2">借款</a>
+          {/if}
+        </div>
+      </div>
+    </div>
+  </div>

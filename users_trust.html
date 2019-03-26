@@ -1,0 +1,16 @@
+{include file="users_main_header.html"}
+<div class="foxfull">
+    <div class="centerIn">
+        <div class="wdzhAll wdzhB">
+            {include file="users_menu.html"}
+            {if $_U.query_class=='account'}
+            {include file="users_trust_account.html"}
+            {elseif $_U.query_class=='cash'}
+            {include file="users_trust_cash.html"}
+            {elseif $_U.query_class=='bank'}
+            {include file="users_trust_bank.html"}
+            {/if}
+        </div>    
+    </div>
+</div>
+{include file="footer.html"}
